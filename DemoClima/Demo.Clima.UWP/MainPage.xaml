@@ -1,0 +1,34 @@
+﻿<Page
+    x:Class="Demo.Clima.UWP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Demo.Clima.UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="Temperatura" FontSize="40" FontWeight="Bold" />
+            <TextBlock Name="txtTemperature" FontSize="40"/>
+        </StackPanel>        
+        <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="Humedad" FontSize="40" FontWeight="Bold"/>
+            <TextBlock Name="txtHumidity" FontSize="40"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <TextBlock Text="Hablitar Corriente" FontSize="40" FontWeight="Bold"/>
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Button Name="btnEnable" Click="btnEnable_Click">Habilitar</Button>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>
