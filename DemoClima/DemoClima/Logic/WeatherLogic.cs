@@ -56,12 +56,14 @@ namespace DemoClima
                 if (reading.IsValid)
                 {
                     weather.Humidity = reading.Humidity.ToString();
-                    weather.Temperature = reading.Temperature.ToString();                    
+                    weather.Temperature = reading.Temperature.ToString();
+                    weather.LastUpdate = DateTime.Now.ToString();
                 }
                 else
                 {
                     weather.Humidity = string.Empty;
                     weather.Temperature = string.Empty;
+                    weather.LastUpdate = string.Empty;
                 }
 
                 _pinOpen.Dispose();

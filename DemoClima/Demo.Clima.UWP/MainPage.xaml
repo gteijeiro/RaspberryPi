@@ -19,6 +19,8 @@
         <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
             <TextBlock Text="Temperatura" FontSize="40" FontWeight="Bold" />
             <TextBlock Name="txtTemperature" FontSize="40"/>
+            <TextBlock Text="Ultima Actualizacion"></TextBlock>
+            <TextBlock Name="txtUltimaAct"></TextBlock>
         </StackPanel>        
         <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
             <TextBlock Text="Humedad" FontSize="40" FontWeight="Bold"/>

@@ -57,6 +57,13 @@ namespace Demo.Clima.UWP
                 {
                     txtTemperature.Text = resultSensor.Temperature + "C°";
                 }
+
+                if(!string.IsNullOrWhiteSpace(resultSensor.LastUpdate))
+                {
+                    txtUltimaAct.Text = resultSensor.LastUpdate;
+                }
+
+
             }
             catch(Exception ex)
             {
