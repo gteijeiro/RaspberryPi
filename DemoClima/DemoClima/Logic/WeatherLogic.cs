@@ -36,7 +36,7 @@ namespace DemoClima
 
         #region Methods Public
 
-        public async Task<WeatherEntity> GetWeatherAsync()
+        public async Task<WeatherEntity> GetWeatherAsync(GpioController gpio)
         {
             GpioPin _pinOpen = null;
             Dht11 dht11 = null;          
@@ -46,7 +46,7 @@ namespace DemoClima
 
                 var weather = new WeatherEntity();
 
-                _pinOpen = GpioController.GetDefault().OpenPin(_pinInput, GpioSharingMode.Exclusive);
+                _pinOpen = gpio.OpenPin(_pinInput, GpioSharingMode.Exclusive);
 
                 dht11 = new Dht11(_pinOpen, GpioPinDriveMode.Input);
 

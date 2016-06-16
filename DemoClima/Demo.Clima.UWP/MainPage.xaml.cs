@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -14,6 +16,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using Windows.Devices.Gpio;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -26,9 +31,11 @@ namespace Demo.Clima.UWP
     {
         DispatcherTimer timer = null;
         bool isEnable = false;
+        private GpioController gpio;
 
         public MainPage()
         {
+            gpio = GpioController.GetDefault();
             timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 5);
             timer.Tick += Timer_Tick;
@@ -46,7 +53,7 @@ namespace Demo.Clima.UWP
             try
             {
                 var weather = new WeatherLogic();
-                var resultSensor = await weather.GetWeatherAsync();
+                var resultSensor = await weather.GetWeatherAsync(gpio);
 
                 if(!string.IsNullOrWhiteSpace(resultSensor.Humidity))
                 {
@@ -61,6 +68,7 @@ namespace Demo.Clima.UWP
                 if(!string.IsNullOrWhiteSpace(resultSensor.LastUpdate))
                 {
                     txtUltimaAct.Text = resultSensor.LastUpdate;
+                    UpdateService(resultSensor);
                 }
 
 
@@ -71,13 +79,38 @@ namespace Demo.Clima.UWP
             }
         }
 
+        private void UpdateService(WeatherEntity entity)
+        {
+            try
+            {
+                var ojectConvert = JsonConvert.SerializeObject(entity);
+
+                HttpContent content = new StringContent(ojectConvert.ToString(), Encoding.UTF8, "application/json");
+
+                using (var client = new HttpClient())
+                {
+                    // New code:
+                    client.BaseAddress = new Uri("http://democlima.azurewebsites.net/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    var result = client.PostAsync("api/clima/", content).Result;
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+        }
+
+
         private void btnEnable_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 var light = new LightLogic();
                 var enable = isEnable ? true : false;
-                light.SetLightAsync(enable);
+                light.SetLightAsync(enable, gpio);
 
                 isEnable = !enable;
 

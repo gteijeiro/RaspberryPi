@@ -39,35 +39,34 @@ namespace DemoClima.Logic
 
         #region Methods Public
 
-        public async void SetLightAsync(bool pEnable)
+        public void SetLightAsync(bool pEnable, GpioController gPio)
         {
             GpioPin _pinOpen = null;
-            GpioOpenStatus status;
             try
             {
-                var controllerOpen = await GpioController.GetDefaultAsync();
-                var isOpen = controllerOpen.TryOpenPin(_pinInput, GpioSharingMode.Exclusive, out _pinOpen, out status);
-                _pinOpen.SetDriveMode(GpioPinDriveMode.OutputOpenSource);
+                //await Task.Yield();
+                var controllerOpen = gPio;
+                _pinOpen = controllerOpen.OpenPin(_pinInput, GpioSharingMode.SharedReadOnly);
+                _pinOpen.SetDriveMode(GpioPinDriveMode.Output);
+           
 
-                if (isOpen)
+
+                if (!pEnable)
                 {                    
-                    if(status == GpioOpenStatus.PinOpened)
-                    {
-                        if (!pEnable)
-                        {
-                            //await Task.Delay(1000);
-                            _pinOpen.Write(GpioPinValue.High);
-                        }
-                        else
-                        {
-                            //await Task.Delay(1000);
-                            //_pinOpen.SetDriveMode(GpioPinDriveMode.Input);
-                            _pinOpen.Write(GpioPinValue.Low);
-                        }
-                    }                   
+                    //await Task.Delay(1000);
+                    _pinOpen.Write(GpioPinValue.Low);
+                }
+                else
+                {
+                    //await Task.Delay(1000);
+                    //_pinOpen.SetDriveMode(GpioPinDriveMode.Input);
+                    _pinOpen.Write(GpioPinValue.High);
+
+
                 }
 
-              
+
+
                 _pinOpen.Dispose();
             }
             catch (Exception ex)
